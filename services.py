@@ -94,6 +94,7 @@ services: dict[str, tuple] = {
   "livestreamWideRoadEncodeData": (False, 20.),
   "livestreamRoadEncodeData": (False, 20.),
   "livestreamDriverEncodeData": (False, 20.),
+  "controlsMsg": (False, 30.),
   "customReservedRawData0": (True, 0.),
   "customReservedRawData1": (True, 0.),
   "customReservedRawData2": (True, 0.),

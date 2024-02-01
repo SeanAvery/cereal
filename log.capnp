@@ -1023,6 +1023,11 @@ struct EncodeIndex {
   }
 }
 
+struct ControlsMsg {
+  throttle @0 :Data;
+  steering @1 :Data;
+}
+
 struct AndroidLogEntry {
   id @0 :UInt8;
   ts @1 :UInt64;
@@ -2318,7 +2323,7 @@ struct Event {
     customReservedRawData2 @126 :Data;
 
     # *********** Custom: reserved for forks ***********
-    customReserved0 @107 :Custom.CustomReserved0;
+    controlsMsg @107:ControlsMsg;
     customReserved1 @108 :Custom.CustomReserved1;
     customReserved2 @109 :Custom.CustomReserved2;
     customReserved3 @110 :Custom.CustomReserved3;
