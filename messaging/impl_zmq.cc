@@ -69,6 +69,23 @@ int ZMQSubSocket::connect(Context *context, std::string endpoint, std::string ad
   return zmq_connect(sock, full_endpoint.c_str());
 }
 
+int ZMQSubSocket::connect(Context *context, std::string endpoint, bool check_endpoint){
+  sock = zmq_socket(context->getRawContext(), ZMQ_SUB);
+  if (sock == NULL){
+    return -1;
+  }
+
+  zmq_setsockopt(sock, ZMQ_SUBSCRIBE, "", 0);
+
+  full_endpoint = "tcp://*:";
+  if (check_endpoint){
+    full_endpoint += std::to_string(get_port(endpoint));
+  } else {
+    full_endpoint += endpoint;
+  }
+
+  return zmq_bind(sock, full_endpoint.c_str());
+}
 
 Message * ZMQSubSocket::receive(bool non_blocking){
   zmq_msg_t msg;
@@ -113,6 +130,35 @@ int ZMQPubSocket::connect(Context *context, std::string endpoint, bool check_end
   pid = getpid();
 
   return zmq_bind(sock, full_endpoint.c_str());
+}
+
+int ZMQPubSocket::connect(Context *context, std::string endpoint, std::string address, int hwm, bool check_endpoint){
+  sock = zmq_socket(context->getRawContext(), ZMQ_PUB);
+  if (sock == NULL){
+    return -1;
+  }
+
+  if (address == ""){
+    address = "*";
+  }
+  full_endpoint = "tcp://" + address + ":";
+  if (check_endpoint){
+    full_endpoint += std::to_string(get_port(endpoint));
+  } else {
+    full_endpoint += endpoint;
+  }
+
+  // TODO: do i need to conflate?
+  // TODO: do i need reccnnect ivl max?
+  int reconnect_ivl = 500;
+  zmq_setsockopt(sock, ZMQ_RECONNECT_IVL_MAX, &reconnect_ivl, sizeof(reconnect_ivl));
+  // set high water mark
+  zmq_setsockopt(sock, ZMQ_SNDHWM, &hwm, sizeof(hwm));
+
+  // ZMQ pub sockets cannot be shared between processes, so we need to ensure pid stays the same
+  pid = getpid();
+
+  return zmq_connect(sock, full_endpoint.c_str());
 }
 
 int ZMQPubSocket::sendMessage(Message *message) {

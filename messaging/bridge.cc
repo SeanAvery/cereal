@@ -39,9 +39,9 @@ int main(int argc, char** argv) {
   signal(SIGINT, (sighandler_t)set_do_exit);
   signal(SIGTERM, (sighandler_t)set_do_exit);
 
-  bool zmq_to_msgq = argc > 2;
-  std::string ip = zmq_to_msgq ? argv[1] : "127.0.0.1";
-  std::string whitelist_str = zmq_to_msgq ? std::string(argv[2]) : "";
+  bool zmq_to_msgq = false;
+  std::string ip = argc > 1 ? argv[1] : "127.0.0.1";
+  std::string whitelist_str = argc > 2 ? std::string(argv[2]) : "";
 
   Poller *poller;
   Context *pub_context;
