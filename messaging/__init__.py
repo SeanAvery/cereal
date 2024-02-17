@@ -62,6 +62,12 @@ def pub_sock(endpoint: str) -> PubSocket:
   return sock
 
 
+def pub_sock_client(endpoint: str, addr: str = "127.0.0.1", conflate: bool = False, check_endpoint: bool = True) -> PubSocket:
+  sock = PubSocket()
+  sock.request(context, endpoint, addr.encode('utf8'), conflate, check_endpoint)
+  return sock
+
+
 def sub_sock(endpoint: str, poller: Optional[Poller] = None, addr: str = "127.0.0.1",
              conflate: bool = False, timeout: Optional[int] = None) -> SubSocket:
   sock = SubSocket()
@@ -72,6 +78,17 @@ def sub_sock(endpoint: str, poller: Optional[Poller] = None, addr: str = "127.0.
 
   if poller is not None:
     poller.registerSocket(sock)
+  return sock
+
+
+def sub_sock_server(endpoint: str, poller: Optional[Poller] = None) -> SubSocket:
+  """Binds instead of connects. Useful for publishers not on the same LAN."""
+  sock = SubSocket()
+  sock.serve(context, endpoint, True)
+
+  if poller is not None:
+    poller.registerSocket(sock)
+
   return sock
 
 

@@ -80,6 +80,11 @@ int MSGQSubSocket::connect(Context *context, std::string endpoint, std::string a
 }
 
 
+int MSGQSubSocket::serve(Context *context, std::string endpoint, bool check_endpoint) {
+  return 0;
+}
+
+
 Message * MSGQSubSocket::receive(bool non_blocking){
   msgq_do_exit = 0;
 
@@ -162,6 +167,10 @@ int MSGQPubSocket::connect(Context *context, std::string endpoint, bool check_en
 
   msgq_init_publisher(q);
 
+  return 0;
+}
+
+int MSGQPubSocket::request(Context *context, std::string endpoint, std::string address, bool conflate, bool check_endpoint) {
   return 0;
 }
 

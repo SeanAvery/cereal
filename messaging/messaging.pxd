@@ -50,6 +50,7 @@ cdef extern from "cereal/messaging/messaging.h":
     @staticmethod
     SubSocket * create()
     int connect(Context *, string, string, bool)
+    int serve(Context *, string, bool)
     Message * receive(bool)
     void setTimeout(int)
 
@@ -57,6 +58,7 @@ cdef extern from "cereal/messaging/messaging.h":
     @staticmethod
     PubSocket * create()
     int connect(Context *, string)
+    int request(Context *, string, string, bool, bool)
     int sendMessage(Message *)
     int send(char *, size_t)
     bool all_readers_updated()

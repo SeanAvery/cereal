@@ -40,6 +40,7 @@ public:
 class SubSocket {
 public:
   virtual int connect(Context *context, std::string endpoint, std::string address, bool conflate=false, bool check_endpoint=true) = 0;
+  virtual int serve(Context *context, std::string endpoint, bool check_endpoint=true) = 0;
   virtual void setTimeout(int timeout) = 0;
   virtual Message *receive(bool non_blocking=false) = 0;
   virtual void * getRawSocket() = 0;
@@ -51,6 +52,7 @@ public:
 class PubSocket {
 public:
   virtual int connect(Context *context, std::string endpoint, bool check_endpoint=true) = 0;
+  virtual int request(Context *context, std::string endpoint, std::string address, bool conflate=false, bool check_endpoint=true) = 0;
   virtual int sendMessage(Message *message) = 0;
   virtual int send(char *data, size_t size) = 0;
   virtual bool all_readers_updated() = 0;

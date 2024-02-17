@@ -36,7 +36,8 @@ private:
   std::string full_endpoint;
 public:
   int connect(Context *context, std::string endpoint, std::string address, bool conflate=false, bool check_endpoint=true);
-  int connect(Context *context, std::string endpoint, bool check_endpoint=true);
+  int serve(Context *context, std::string endpoint, bool check_endpoint);
+  // int connect(Context *context, std::string endpoint, bool check_endpoint);
   void setTimeout(int timeout);
   void * getRawSocket() {return sock;}
   Message *receive(bool non_blocking=false);
@@ -50,6 +51,7 @@ private:
   int pid = -1;
 public:
   int connect(Context *context, std::string endpoint, bool check_endpoint=true);
+  int request(Context *context, std::string endpoint, std::string address, bool conflate=false, bool check_endpoint=true);
   int connect(Context *context, std::string endpoint, std::string address, int hwm=10, bool check_endpoint=true);
   int sendMessage(Message *message);
   int send(char *data, size_t size);
