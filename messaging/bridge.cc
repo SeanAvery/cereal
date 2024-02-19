@@ -40,7 +40,6 @@ int main(int argc, char** argv) {
   signal(SIGTERM, (sighandler_t)set_do_exit);
 
 
-  bool zmq_to_msgq = false;
   std::string ip = argc > 1 ? argv[1] : "127.0.0.1";
   std::string whitelist_str = argc > 2 ? std::string(argv[2]) : "";
 
@@ -52,13 +51,12 @@ int main(int argc, char** argv) {
   sub_context = new MSGQContext();
 
   std::map<SubSocket*, PubSocket*> sub2pub;
-  for (auto endpoint : get_services(whitelist_str, zmq_to_msgq)) {
+  for (auto endpoint : get_services(whitelist_str, true)) {
     PubSocket * pub_sock;
     SubSocket * sub_sock;
 
     pub_sock = new ZMQPubSocket();
     sub_sock = new MSGQSubSocket();
-
     pub_sock->request(pub_context, endpoint, ip, 10, true);
     sub_sock->connect(sub_context, endpoint, "127.0.0.1", false);
 
