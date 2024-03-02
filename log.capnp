@@ -1023,9 +1023,39 @@ struct EncodeIndex {
   }
 }
 
+# TURBO PLUGINS
+
 struct ControlsMsg {
   throttle @0 :Data;
   steering @1 :Data;
+}
+
+struct G29 {
+  steering @0 :Float32;
+  throttle @1 :Float32;
+  brake @2 :Float32;
+  clutch @3 :Float32;
+  buttons @4 :G29Buttons;
+}
+
+struct G29Buttons {
+  x @0 :Bool;
+  square @1 :Bool;
+  circle @2 :Bool;
+  triangle @3 :Bool;
+  l1 @4 :Bool;
+  r1 @5 :Bool;
+  l2 @6 :Bool;
+  r2 @7 :Bool;
+  share @8 :Bool;
+  options @9 :Bool;
+  l3 @10 :Bool;
+  r3 @11 :Bool;
+  ps @12 :Bool;
+  dpadUp @13 :Bool;
+  dpadRight @14 :Bool;
+  dpadDown @15 :Bool;
+  dpadLeft @16 :Bool;
 }
 
 struct AndroidLogEntry {
@@ -2324,7 +2354,7 @@ struct Event {
 
     # *********** Custom: reserved for forks ***********
     controlsMsg @107:ControlsMsg;
-    customReserved1 @108 :Custom.CustomReserved1;
+    g29 @108 :G29;
     customReserved2 @109 :Custom.CustomReserved2;
     customReserved3 @110 :Custom.CustomReserved3;
     customReserved4 @111 :Custom.CustomReserved4;
