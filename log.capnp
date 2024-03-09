@@ -1056,6 +1056,7 @@ struct G29Buttons {
   dpadRight @14 :Bool;
   dpadDown @15 :Bool;
   dpadLeft @16 :Bool;
+  dial @17 :Int32;
 }
 
 struct AndroidLogEntry {
