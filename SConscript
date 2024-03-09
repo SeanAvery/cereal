@@ -40,6 +40,9 @@ Depends('messaging/impl_zmq.cc', services_h)
 env.Program('messaging/bridge', ['messaging/bridge.cc'], LIBS=[messaging_lib, 'zmq', common])
 Depends('messaging/bridge.cc', services_h)
 
+env.Program('messaging/bridge_client', ['messaging/bridge_client.cc'], LIBS=[messaging_lib, 'zmq', common])
+Depends('messaging/bridge_client.cc', services_h)
+
 envCython.Program('messaging/messaging_pyx.so', 'messaging/messaging_pyx.pyx', LIBS=envCython["LIBS"]+[messaging_lib, "zmq", common])
 
 

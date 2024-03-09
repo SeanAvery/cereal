@@ -39,36 +39,26 @@ int main(int argc, char** argv) {
   signal(SIGINT, (sighandler_t)set_do_exit);
   signal(SIGTERM, (sighandler_t)set_do_exit);
 
-  bool zmq_to_msgq = argc > 2;
-  std::string ip = zmq_to_msgq ? argv[1] : "127.0.0.1";
-  std::string whitelist_str = zmq_to_msgq ? std::string(argv[2]) : "";
+
+  std::string ip = argc > 1 ? argv[1] : "127.0.0.1";
+  std::string whitelist_str = argc > 2 ? std::string(argv[2]) : "";
 
   Poller *poller;
   Context *pub_context;
   Context *sub_context;
-  if (zmq_to_msgq) {  // republishes zmq debugging messages as msgq
-    poller = new ZMQPoller();
-    pub_context = new MSGQContext();
-    sub_context = new ZMQContext();
-  } else {
-    poller = new MSGQPoller();
-    pub_context = new ZMQContext();
-    sub_context = new MSGQContext();
-  }
+  poller = new MSGQPoller();
+  pub_context = new ZMQContext();
+  sub_context = new MSGQContext();
 
   std::map<SubSocket*, PubSocket*> sub2pub;
-  for (auto endpoint : get_services(whitelist_str, zmq_to_msgq)) {
+  for (auto endpoint : get_services(whitelist_str, true)) {
     PubSocket * pub_sock;
     SubSocket * sub_sock;
-    if (zmq_to_msgq) {
-      pub_sock = new MSGQPubSocket();
-      sub_sock = new ZMQSubSocket();
-    } else {
-      pub_sock = new ZMQPubSocket();
-      sub_sock = new MSGQSubSocket();
-    }
-    pub_sock->connect(pub_context, endpoint);
-    sub_sock->connect(sub_context, endpoint, ip, false);
+
+    pub_sock = new ZMQPubSocket();
+    sub_sock = new MSGQSubSocket();
+    pub_sock->request(pub_context, endpoint, ip, 10, true);
+    sub_sock->connect(sub_context, endpoint, "127.0.0.1", false);
 
     poller->registerSocket(sub_sock);
     sub2pub[sub_sock] = pub_sock;
