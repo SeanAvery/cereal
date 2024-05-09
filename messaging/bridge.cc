@@ -26,7 +26,7 @@ static std::vector<std::string> get_services(std::string whitelist_str, bool zmq
   for (const auto& it : services) {
     std::string name = it.second.name;
     bool in_whitelist = whitelist_str.find(name) != std::string::npos;
-    if (name == "plusFrame" || name == "uiLayoutState" || (zmq_to_msgq && !in_whitelist)) {
+    if (name == "plusFrame" || name == "uiLayoutState" || !in_whitelist) {
       continue;
     }
     service_list.push_back(name);
@@ -40,8 +40,8 @@ int main(int argc, char** argv) {
   signal(SIGTERM, (sighandler_t)set_do_exit);
 
   bool zmq_to_msgq = argc > 2;
-  std::string ip = zmq_to_msgq ? argv[1] : "127.0.0.1";
-  std::string whitelist_str = zmq_to_msgq ? std::string(argv[2]) : "";
+  std::string whitelist_str = std::string(argv[1]);
+  std::string ip = zmq_to_msgq ? argv[2] : "127.0.0.1";
 
   Poller *poller;
   Context *pub_context;
