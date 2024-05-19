@@ -2349,8 +2349,8 @@ struct Event {
     livestreamWideRoadEncodeData @121 :EncodeData;
     livestreamDriverEncodeData @122 :EncodeData;
 
-    mapsEncodeData @124 :EncodeData;
-    customReservedRawData1 @125 :Data;
+    mapEncodeData @124 :EncodeData;
+    mapEncodeIdx @125 :EncodeIndex;
     customReservedRawData2 @126 :Data;
 
     # *********** Custom: reserved for forks ***********

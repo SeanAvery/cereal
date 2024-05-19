@@ -88,7 +88,7 @@ services: dict[str, tuple] = {
   "driverEncodeData": (False, 20.),
   "wideRoadEncodeData": (False, 20.),
   "qRoadEncodeData": (False, 20.),
-  "mapsEncodeData": (False, 20.),
+  "mapEncodeData": (False, 20.),
   "livestreamWideRoadEncodeIdx": (False, 20.),
   "livestreamRoadEncodeIdx": (False, 20.),
   "livestreamDriverEncodeIdx": (False, 20.),
